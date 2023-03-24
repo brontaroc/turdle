@@ -38,8 +38,8 @@ namespace Variables
             int CurrentStreak = PreviousScores[0] + PreviousScores[1] + PreviousScores[2] + PreviousScores[3] + PreviousScores[4] + PreviousScores[5];
             int HighScore = PreviousScores[6];
 
-            answer = "tarps";
-            AnswerArray = answer.ToCharArray();
+   //         answer = "tarps";
+   //         AnswerArray = answer.ToCharArray();
 
             DrawTurdle();
             ResetScoreboard();
@@ -187,6 +187,7 @@ namespace Variables
             void PrintKeyboard()
             {
                 Console.WriteLine();
+                Console.WriteLine("--------------------------");
 
                 for (int i = 0; i < 26; i++)
                 {
@@ -215,8 +216,8 @@ namespace Variables
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("");
+                Console.WriteLine("--------------------------");
                 Console.WriteLine("");
-
             }
 
             // get the word to guess from the list
