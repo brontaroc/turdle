@@ -35,19 +35,13 @@ namespace Variables
             char[] AllGuesses = new char[30];
             char[] Keyboard = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             int[] KeyUsed = new int[26];
-            string[] SemiColons = { ";", ";", ";", ";", ";", ";" };
 
-            //          answer = "tarps";
-            //          AnswerArray = answer.ToCharArray();
-
-           
             DrawTurdle();
             RunGame();
             ResetKeyboard();
 
             void RunGame()
             {
-
                 Console.Clear();
 
                 WelcomeMessage();
@@ -504,12 +498,8 @@ namespace Variables
                     {
                         SaveData[i] = PreviousScores[i].ToString();
                     }
-                    //         File.WriteAllLines("savedata.txt", SaveData[i]);
-                    //         File.WriteAllLines("savedata.txt", SemiColons[i]);
 
                     File.WriteAllLines("savedata.txt", SaveData);
-                
-
             }
 
             bool CheckValidYN(string YN)
