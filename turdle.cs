@@ -63,14 +63,14 @@ namespace Variables
             {
                 Console.WriteLine("");
                 Console.Clear();
-                Console.WriteLine("##########  ##.   ##  #######.  #######.   ##         ########");
-                Console.WriteLine("    ##      ##.   ##  ##    ##. ##     ##. ##         ##");
-                Console.WriteLine("    ##.     ##.   ##  ##    ##. ##     ##. ##         ##");
-                Console.WriteLine("    ##.     ##.   ##  ##.  ##.  ##     ##. ##         ######");
-                Console.WriteLine("    ##.     ##.   ##  ## ##.    ##     ##. ##         ##");
-                Console.WriteLine("    ##.     ##.   ##  ##. ##.   ##     ##. ##         ##");
-                Console.WriteLine("    ##.     ##    ##  ##.  ##.  ##.    ##. ##         ##");
-                Console.WriteLine("    ##      ########  ##.   ##. #######.   #########  ########");
+                Console.WriteLine("##########  ##.    ##.  #######.  #######.   ##.        ########");
+                Console.WriteLine("    ##.     ##.    ##.  ##.   ##. ##.    ##. ##.        ##.");
+                Console.WriteLine("    ##.     ##.    ##.  ##.   ##. ##.    ##. ##.        ##.");
+                Console.WriteLine("    ##.     ##.    ##.  ##.  ##.  ##.    ##. ##.        ######");
+                Console.WriteLine("    ##.     ##.    ##.  ## ##.    ##.    ##. ##.        ##.");
+                Console.WriteLine("    ##.     ##.    ##.  ##. ##.   ##.    ##. ##.        ##.");
+                Console.WriteLine("    ##.     ##.    ##.  ##.  ##.  ##.    ##. ##.        ##.");
+                Console.WriteLine("    ##.     #########.  ##.   ##. #######.   #########  ########");
                 Console.WriteLine("");
                 WaitForAnyKeyPress();
             }
