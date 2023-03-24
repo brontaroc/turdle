@@ -37,9 +37,10 @@ namespace Variables
             int[] KeyUsed = new int[26];
             int CurrentStreak = PreviousScores[0] + PreviousScores[1] + PreviousScores[2] + PreviousScores[3] + PreviousScores[4] + PreviousScores[5];
             int HighScore = PreviousScores[6];
-
-   //         answer = "tarps";
-   //         AnswerArray = answer.ToCharArray();
+            
+            //      force answer for testing
+            //      answer = "tarps";
+            //      AnswerArray = answer.ToCharArray();
 
             DrawTurdle();
             ResetScoreboard();
