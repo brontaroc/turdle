@@ -37,17 +37,18 @@ namespace Variables
             int[] KeyUsed = new int[26];
 
             DrawTurdle();
+            ResetScoreboard();
             RunGame();
             ResetKeyboard();
+            
 
             void RunGame()
             {
-                Console.Clear();
-
-                WelcomeMessage();
+                Console.Clear();               
 
                 do
                 {
+                    PrintBoard();
                     PlayAgainChar = 'y';
                     GuessReset();
                     PrintKeyboard();
@@ -87,36 +88,56 @@ namespace Variables
 
             void WelcomeMessage()
             {
+                Console.Clear();
 
-                Console.Write("Let's play ");
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("T");
+                for (int i = 0; i < 4; i++)
+                {
 
-                Console.BackgroundColor = ConsoleColor.Yellow;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("U");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("");
+
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("T");
+
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("U");
 
 
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("R");
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("R");
 
-                Console.BackgroundColor = ConsoleColor.Yellow;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("D");
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("D");
 
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("L");
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("L");
 
-                Console.BackgroundColor = ConsoleColor.Yellow;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.Write("E");
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("E");
 
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(" ");
+                }
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("");
+                Console.WriteLine("");                    
+            }
+
+            void ResetScoreboard()
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    ScoreBoard[i] = 4;
+                }
             }
 
             void ResetKeyboard()
@@ -322,6 +343,8 @@ namespace Variables
                             InWord = true;
                             ChangeToGreen(loc);
                         }
+                        else if (ScoreBoard[(i + ((GuessNumber - 1) * 5))] == 4)
+                            ScoreBoard[(i + ((GuessNumber - 1) * 5))] = 0;
 
                     }
                 }
@@ -351,9 +374,19 @@ namespace Variables
             void PrintBoard()
             {
                 Console.Clear();
+                WelcomeMessage();
 
-                for (int i = 0; i < (GuessNumber * 5); i++)
+                for (int i = 0; i < 30; i++)
                 {
+                    if (i % 5 == 0)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write(" ");
+                        }
+                    }
                     if (ScoreBoard[i] == 0)
                     {
                         Console.BackgroundColor = ConsoleColor.Red;
@@ -392,6 +425,20 @@ namespace Variables
                             Console.WriteLine("");
                         }
                     }
+                    else if (ScoreBoard[i] == 4)
+                    {
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write("·");
+                        if ((i + 1) % 5 == 0 && i > 0)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine("");
+                        }
+
+                    }
+
 
 
 
@@ -563,6 +610,7 @@ namespace Variables
                         Array.Clear(AllGuesses, 0, 30);
 
                         ResetKeyboard();
+                        ResetScoreboard();
                         RunGame();
                     }
                     else if (PlayAgainChar == 'n')
