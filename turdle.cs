@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 
 using System;
 using System.Runtime.InteropServices;
@@ -181,8 +181,8 @@ namespace Variables
                     // print gray letters
                     else if (KeyUsed[i] == 2)
                     {
-                        Console.BackgroundColor = ConsoleColor.DarkGray;
-                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.Write($"{Keyboard[i]}");
                     }
                 }
@@ -316,7 +316,7 @@ namespace Variables
                     {
                         if (UserGuessArray[i] == AnswerGreenArray[j] && AnswerGreenArray[i] != '-')
                         {
-                            AnswerSolvedArray[i] = 2;                            
+                            AnswerSolvedArray[i] = 2;
                             AnswerGreenArray[j] = '&';
                             ScoreBoard[(i + ((GuessNumber - 1) * 5))] = 2;
                             InWord = true;
@@ -345,7 +345,7 @@ namespace Variables
                     PreviousScores[i] = 0;
                     SaveData[i] = "0";
                 }
-               
+
             }
 
             void PrintBoard()
@@ -353,7 +353,7 @@ namespace Variables
                 Console.Clear();
 
                 for (int i = 0; i < (GuessNumber * 5); i++)
-                { 
+                {
                     if (ScoreBoard[i] == 0)
                     {
                         Console.BackgroundColor = ConsoleColor.Red;
@@ -392,7 +392,7 @@ namespace Variables
                             Console.WriteLine("");
                         }
                     }
-                    
+
 
 
 
@@ -409,7 +409,7 @@ namespace Variables
 
                     if (answer == UserGuess)
                     {
-                        
+
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("");
@@ -422,7 +422,7 @@ namespace Variables
                         break;
                     }
 
-                    
+
 
                 }
 
@@ -493,13 +493,13 @@ namespace Variables
 
             void SaveDataOnQuit()
             {
-                
-                    for (int i = 0; i < PreviousScores.Length; i++)
-                    {
-                        SaveData[i] = PreviousScores[i].ToString();
-                    }
 
-                    File.WriteAllLines("savedata.txt", SaveData);
+                for (int i = 0; i < PreviousScores.Length; i++)
+                {
+                    SaveData[i] = PreviousScores[i].ToString();
+                }
+
+                File.WriteAllLines("savedata.txt", SaveData);
             }
 
             bool CheckValidYN(string YN)
@@ -531,13 +531,14 @@ namespace Variables
 
                     PlayAgainString = Console.ReadLine().ToLower();
                     if (PlayAgainString.Length > 0)
-                    { 
+                    {
                         ValidYN = CheckValidYN(PlayAgainString);
                     }
                     else
                         PlayAgainYN();
 
-                    if (ValidYN == true) { 
+                    if (ValidYN == true)
+                    {
                         PlayAgainChar = PlayAgainString[0];
                     }
                     Console.WriteLine("");
@@ -573,7 +574,7 @@ namespace Variables
                     else
                         PlayAgainYN();
 
-                    
+
 
                 } while (PlayAgainChar != 'y' || PlayAgainChar != 'n');
 
