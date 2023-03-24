@@ -35,6 +35,11 @@ namespace Variables
             char[] AllGuesses = new char[30];
             char[] Keyboard = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             int[] KeyUsed = new int[26];
+            int CurrentStreak = PreviousScores[0] + PreviousScores[1] + PreviousScores[2] + PreviousScores[3] + PreviousScores[4] + PreviousScores[5];
+            int HighScore = PreviousScores[6];
+
+            answer = "tarps";
+            AnswerArray = answer.ToCharArray();
 
             DrawTurdle();
             ResetScoreboard();
@@ -481,10 +486,24 @@ namespace Variables
 
             void GuessDistribution(int Guess)
             {
+                PreviousScores[Guess - 1] = PreviousScores[Guess - 1] + 1;
+                SaveData[Guess - 1] = PreviousScores[Guess - 1].ToString();
+
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"\nCurrent Streak: {PreviousScores[0] + PreviousScores[1] + PreviousScores[2] + PreviousScores[3] + PreviousScores[4] + PreviousScores[5] + 1}");
-                PreviousScores[Guess - 1] = PreviousScores[Guess - 1] + 1;
+                CurrentStreak = CurrentStreak + 1;
+                Console.WriteLine($"\nCurrent Streak: {CurrentStreak}");
+                Console.Write($"Longest Streak: ");
+                if (CurrentStreak > HighScore)
+                {
+                    Console.WriteLine(CurrentStreak);
+                    HighScore = CurrentStreak;
+                    PreviousScores[6] = CurrentStreak;
+                }
+                else
+                { 
+                    Console.WriteLine(HighScore);
+                }
 
 
                 for (int i = 0; i < 6; i++)
@@ -541,12 +560,14 @@ namespace Variables
             void SaveDataOnQuit()
             {
 
+                Console.WriteLine("Saving Data...");
+
                 for (int i = 0; i < PreviousScores.Length; i++)
                 {
                     SaveData[i] = PreviousScores[i].ToString();
                 }
 
-                File.WriteAllLines("savedata.txt", SaveData);
+                File.WriteAllLines(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "data/savedata.txt"), SaveData);
             }
 
             bool CheckValidYN(string YN)
