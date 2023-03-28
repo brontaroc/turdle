@@ -35,21 +35,29 @@ namespace Variables
             char[] AllGuesses = new char[30];
             char[] Keyboard = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             int[] KeyUsed = new int[26];
-            int CurrentStreak = PreviousScores[0] + PreviousScores[1] + PreviousScores[2] + PreviousScores[3] + PreviousScores[4] + PreviousScores[5];
+            int AllTimeScores = PreviousScores[0] + PreviousScores[1] + PreviousScores[2] + PreviousScores[3] + PreviousScores[4] + PreviousScores[5];
             int HighScore = PreviousScores[6];
+            int TotalGames = PreviousScores[7];
+            double TotalGamesDouble = Convert.ToDouble(TotalGames);
+            double AllTimeScoresDouble = Convert.ToDouble(AllTimeScores);
+            double WinPct = 100.00;
+            int WinPctInt = Convert.ToInt32(WinPct);
+            int CurrentStreak = PreviousScores[8];
+            bool ValidNC = false;
+            char UserInputChar = '-';
 
-   //         answer = "tarps";
-   //         AnswerArray = answer.ToCharArray();
+            //     answer = "tarps";
+            //     AnswerArray = answer.ToCharArray();
 
             DrawTurdle();
             ResetScoreboard();
-            RunGame();
             ResetKeyboard();
-            
+            RunGame();
+
 
             void RunGame()
             {
-                Console.Clear();               
+                Console.Clear();
 
                 do
                 {
@@ -60,6 +68,7 @@ namespace Variables
                     getGuess(GuessNumber);
                     CheckGreenYellow();
                     ValidGuess = false;
+                    IterateTotals();
                     DisplayGuess();
                     EndGame();
                 } while (Solved == false && GuessNumber < 7 && RunState == true);
@@ -78,17 +87,98 @@ namespace Variables
                 Console.WriteLine("    ##.     ##.    ##.  ##.  ##.  ##.    ##. ##.        ##.");
                 Console.WriteLine("    ##.     #########.  ##.   ##. #######.   #########  ########");
                 Console.WriteLine("");
-                WaitForAnyKeyPress();
+                
+                if (UserInputChar == 'w')
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("All save data has been cleared.\n");
+                }
+
+                NewOrContinue();
             }
 
-            void WaitForAnyKeyPress()
+            void NewOrContinue()
             {
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("Press any key to begin...");
-                Console.ReadKey(true);
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;
+                      
+                do
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.WriteLine("MAIN MENU");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.Write("  [N]ew Game\n  [C]ontinue\n  [W]ipe All Data\n  [Q]uit Game\n\n");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.Write("Selection: ");
+                    string UserInput = Console.ReadLine();
+                    UserInput = UserInput.ToLower();
+
+
+
+                    if (HasContent(UserInput) == true)
+                    {
+                        ValidNC = HasContent(UserInput);
+                        char[] UserInputCharArray = UserInput.ToCharArray();
+                        UserInputChar = UserInputCharArray[0];
+                    }
+                    else if (UserInputChar =='w')
+                    {
+                        Console.WriteLine("All Saved Data Cleared.");
+                    }
+                    else
+                    {
+                        DrawTurdle();
+                    }
+                         
+
+                    if (UserInputChar == 'n')
+                    {
+                        ValidNC = true;
+                        ResetPreviousScores();
+                        break;
+                    }
+
+                    if (UserInputChar == 'c')
+                        break;
+
+                    if (UserInputChar == 'w')
+                    {
+                        WipeAllData();
+                        break;
+                    }
+
+                    if (UserInputChar == 'q')
+                        QuitGame();
+
+
+                    Console.WriteLine("");
+
+
+                    
+                } while (UserInputChar != 'c' || UserInputChar != 'n' || UserInputChar != 'w');
+            }
+
+            bool HasContent(string s)
+            {
+                return !string.IsNullOrEmpty(s);
+            }
+
+            bool CheckValidNewContinue(string Input)
+            {
+                bool IsValid = false;
+
+                if (Input != null)
+                {
+                    IsValid = true;
+                }
+                else
+                {
+                    IsValid = false;
+                }
+
+                return IsValid;
             }
 
             void WelcomeMessage()
@@ -134,7 +224,7 @@ namespace Variables
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("");
-                Console.WriteLine("");                    
+                Console.WriteLine("");
             }
 
             void ResetScoreboard()
@@ -157,7 +247,7 @@ namespace Variables
             {
                 char upperCase = Char.ToUpper(LetterToCheck);
                 int KeyIndex = 0;
-                bool KeyGuessed = false;
+          //      bool KeyGuessed = false;
 
                 // find location of guessed letter on the keyboard
                 for (int i = 0; i < 26; i++)
@@ -165,7 +255,7 @@ namespace Variables
                     if (upperCase == Keyboard[i])
                     {
                         KeyIndex = i;
-                        KeyGuessed = true;
+            //            KeyGuessed = true;
                     }
                 }
                 return KeyIndex;
@@ -181,6 +271,12 @@ namespace Variables
             void ChangeToGray(int Index)
             {
                 KeyUsed[Index] = 2;
+            }
+
+            // change keyboard index to print as yellow
+            void ChangeToYellow(int Index)
+            {
+                KeyUsed[Index] = 3;
             }
 
             // display the keyboard
@@ -202,6 +298,12 @@ namespace Variables
                     else if (KeyUsed[i] == 1)
                     {
                         Console.BackgroundColor = ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write($"{Keyboard[i]}");
+                    }
+                    else if (KeyUsed[i] == 3)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Yellow;
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write($"{Keyboard[i]}");
                     }
@@ -307,6 +409,8 @@ namespace Variables
                 }
                 if (ValidGuess == false)
                 {
+                    PrintBoard();
+                    PrintKeyboard();
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid word.");
@@ -314,9 +418,10 @@ namespace Variables
 
             }
 
+
             void CheckGreenYellow()
             {
-                bool InWord = false;
+           //     bool InWord = false;
 
                 // check if green
                 for (int i = 0; i < 5; i++)
@@ -328,7 +433,7 @@ namespace Variables
                         AnswerSolvedArray[i] = 1;
                         AnswerGreenArray[i] = '-';
                         ScoreBoard[(i + ((GuessNumber - 1) * 5))] = 1;
-                        InWord = true;
+             //           InWord = true;
                         ChangeToGreen(loc);
                     }
 
@@ -341,14 +446,25 @@ namespace Variables
 
                     for (int j = 0; j < 5; j++)
                     {
-                        if (UserGuessArray[i] == AnswerGreenArray[j] && AnswerGreenArray[i] != '-')
+                        if (UserGuessArray[i] == AnswerGreenArray[j] && AnswerGreenArray[i] != '-' && KeyUsed[loc] != 1)
                         {
+
                             AnswerSolvedArray[i] = 2;
                             AnswerGreenArray[j] = '&';
                             ScoreBoard[(i + ((GuessNumber - 1) * 5))] = 2;
-                            InWord = true;
-                            ChangeToGreen(loc);
+                  //          InWord = true;
+                            ChangeToYellow(loc);
                         }
+                        else if (UserGuessArray[i] == AnswerGreenArray[j] && AnswerGreenArray[i] != '-' && KeyUsed[loc] != 1 && KeyUsed[loc] != 0)
+                        {
+
+                            AnswerSolvedArray[i] = 2;
+                            AnswerGreenArray[j] = '&';
+                            ScoreBoard[(i + ((GuessNumber - 1) * 5))] = 2;
+                  //          InWord = true;
+                            ChangeToYellow(loc);
+                        }
+
                         else if (ScoreBoard[(i + ((GuessNumber - 1) * 5))] == 4)
                             ScoreBoard[(i + ((GuessNumber - 1) * 5))] = 0;
 
@@ -369,12 +485,41 @@ namespace Variables
 
             void ResetPreviousScores()
             {
-                for (int i = 0; i < 6; i++)
-                {
-                    PreviousScores[i] = 0;
-                    SaveData[i] = "0";
-                }
 
+                Array.Clear(PreviousScores, 0, PreviousScores.Length-3);
+                Array.Clear(SaveData, 0, SaveData.Length-3);
+                CurrentStreak = 0;
+                PreviousScores[8] = 0;
+           //     HighScore = 0;
+                TotalGames = 0;
+                AllTimeScores = 0;
+
+            }
+
+            void WipeAllData()
+            {
+
+                Array.Clear(PreviousScores, 0, PreviousScores.Length);
+                Array.Clear(SaveData, 0, SaveData.Length);
+                CurrentStreak = 0;
+                PreviousScores[8] = 0;
+                PreviousScores[7] = 0;
+                HighScore = 0;
+                TotalGames = 0;
+                AllTimeScores = 0;
+
+                SaveGame();
+
+                PostWipe();
+
+            }
+
+            void PostWipe()
+            {
+                DrawTurdle();
+                ResetScoreboard();
+                ResetKeyboard();
+                RunGame();
             }
 
             void PrintBoard()
@@ -421,7 +566,7 @@ namespace Variables
                     }
                     else if (ScoreBoard[i] == 2)
                     {
-                        Console.BackgroundColor = ConsoleColor.DarkYellow;
+                        Console.BackgroundColor = ConsoleColor.Yellow;
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write(AllGuesses[i]);
                         if ((i + 1) % 5 == 0 && i > 0)
@@ -452,6 +597,34 @@ namespace Variables
                 }
             }
 
+            void IterateTotals()
+            {
+                if (answer == UserGuess)
+                {
+                    AllTimeScores = AllTimeScores + 1;
+                    AllTimeScoresDouble = Convert.ToDouble(AllTimeScores);
+                    TotalGames = TotalGames + 1;
+                    TotalGamesDouble = Convert.ToDouble(TotalGames);
+                    PreviousScores[7] = TotalGames;
+                    WinPct = ((AllTimeScoresDouble / TotalGamesDouble) * 100);
+                    WinPctInt = Convert.ToInt32(WinPct);
+                    CurrentStreak = CurrentStreak + 1;
+                    PreviousScores[8] = CurrentStreak;
+                }
+
+                if (answer != UserGuess && GuessNumber == 6)
+                {
+                    TotalGames = TotalGames + 1;
+                    Console.WriteLine(TotalGames);
+                    TotalGamesDouble = Convert.ToDouble(TotalGames);
+                    PreviousScores[7] = TotalGames;
+                    WinPct = ((AllTimeScoresDouble / TotalGamesDouble) *  100);
+                    WinPctInt = Convert.ToInt32(WinPct);
+                    CurrentStreak = 0;
+                    PreviousScores[8] = CurrentStreak;
+                }
+            }
+
             void DisplayGuess()
             {
                 Console.Clear();
@@ -462,7 +635,6 @@ namespace Variables
 
                     if (answer == UserGuess)
                     {
-
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine("");
@@ -471,9 +643,11 @@ namespace Variables
                         Console.WriteLine($"Score this round: {GuessNumber}");
                         GuessDistribution(GuessNumber);
                         Solved = true;
+                        SaveGame();
                         PlayAgainYN();
                         break;
                     }
+                    
 
 
 
@@ -482,30 +656,56 @@ namespace Variables
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 GuessNumber = GuessNumber + 1;
-
             }
 
             void GuessDistribution(int Guess)
             {
+                int[] CurrentHigh = new int[6];
+
+                // copy previous scores into temporary array
+                for (int i = 0; i < 6; i++)
+                {
+                    CurrentHigh[i] = PreviousScores[i];
+                }
+
+                int MeanScore = (CurrentHigh.Max() + CurrentHigh.Min()) / 2;
+                int Divisor = 0;
+                int MaxLineLength = 20;
                 PreviousScores[Guess - 1] = PreviousScores[Guess - 1] + 1;
+                if (Guess < 7)
+                CurrentHigh[Guess - 1] = CurrentHigh[Guess - 1] + 1;
                 SaveData[Guess - 1] = PreviousScores[Guess - 1].ToString();
+
+                for (int i = 0; i < 6; i++)
+                {
+                    if (PreviousScores[i] != 0)
+                    {
+                        Divisor = Divisor + 1;
+                    }
+                    if (CurrentHigh[i] > MaxLineLength)
+                    {
+                        Divisor = Divisor * 4;
+                    }
+                }
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                CurrentStreak = CurrentStreak + 1;
-                Console.WriteLine($"\nCurrent Streak: {CurrentStreak}");
-                Console.Write($"Longest Streak: ");
-                if (CurrentStreak > HighScore)
+
+
+                Console.Write($"\n[Max Streak: ");
+                if (AllTimeScores > HighScore)
                 {
-                    Console.WriteLine(CurrentStreak);
-                    HighScore = CurrentStreak;
-                    PreviousScores[6] = CurrentStreak;
+                    Console.Write($"{AllTimeScores}] ");
+                    HighScore = AllTimeScores;
+                    PreviousScores[6] = AllTimeScores;
                 }
                 else
-                { 
-                    Console.WriteLine(HighScore);
+                {
+                    Console.Write($"{HighScore}] ");
                 }
-
+                Console.Write($"[Current Streak: {CurrentStreak}]\n");
+                Console.Write($"[Played: {TotalGames}] ");
+                Console.Write($"[Win Pct: {WinPctInt}%]\n");
 
                 for (int i = 0; i < 6; i++)
                 {
@@ -513,23 +713,52 @@ namespace Variables
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(" ");
                     Console.Write($"{i + 1}: ");
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write($"{PreviousScores[i]} ");
-                    for (int j = 0; j < PreviousScores[i]; j++)
+/*
+                    if (CurrentHigh[i] == CurrentHigh.Max())
                     {
-                        Console.BackgroundColor = ConsoleColor.Green;
-                        Console.Write(" ");
+                        for (int k = 0; k < MaxLineLength; k++)
+                        {
+                            Console.BackgroundColor = ConsoleColor.Green;
+                            Console.Write(" ");
+                        }
+                    } */
+                    if (CurrentHigh[i] > 0 && CurrentHigh[i] <= CurrentHigh.Max())
+                    {
+                        for (int j = 0; j < CurrentHigh[i] + (MaxLineLength / Divisor); j++)
+                        { 
+                            if (i % 2 == 0)
+                            {
+                                Console.BackgroundColor = ConsoleColor.Green;
+                                Console.Write(" ");
+                            }
+                            else
+                            {
+                                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                Console.Write(" ");
+
+                            }
+                            
+                        }
+                    }
+                    
+                    if (PreviousScores[i] >= 0)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write($"{PreviousScores[i]} ");
                     }
                 }
+
+                
+
 
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(" ");
                 Console.WriteLine(" ");
-
-
             }
+
+            
 
             void EndGame()
             {
@@ -541,8 +770,9 @@ namespace Variables
                 }
                 else if (answer != UserGuess && GuessNumber == 7)
                 {
-                    ResetPreviousScores();
-                    CurrentStreak = 0;
+                    GuessDistribution(GuessNumber);
+
+                    Solved = false;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("");
@@ -552,7 +782,8 @@ namespace Variables
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.WriteLine("");
-                    ResetPreviousScores();
+                    //      ResetPreviousScores();
+                    CurrentStreak = 0;
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.BackgroundColor = ConsoleColor.Black;
                     PlayAgainYN();
@@ -560,7 +791,7 @@ namespace Variables
 
             }
 
-            void SaveDataOnQuit()
+            void SaveGame()
             {
 
                 Console.WriteLine("Saving Data...");
@@ -656,7 +887,7 @@ namespace Variables
 
             void QuitGame()
             {
-                SaveDataOnQuit();
+                SaveGame();
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.WriteLine($"Thanks for playing.");
